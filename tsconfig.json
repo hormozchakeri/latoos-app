@@ -8,6 +8,13 @@
       ]
     }
   },
+    "compilerOptions": {
+    "jsx": "react-native",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
   "include": [
     "**/*.ts",
     "**/*.tsx",
