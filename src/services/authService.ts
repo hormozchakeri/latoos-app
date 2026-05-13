@@ -1,6 +1,6 @@
-// src/services/authService.ts
 import { AxiosResponse } from "axios";
-import { api } from "../api/apiClient";
+import api from "../api/apiClient";
+import { config } from "@/constants/config";
 
 import type { LoginResponse, RefreshResponse } from "@/types/auth";
 
@@ -8,7 +8,7 @@ export async function loginApi(
   username: string,
   password: string,
 ): Promise<LoginResponse> {
-  const response = await fetch("http://10.0.2.2:5171/api/Account/login", {
+  const response = await fetch(`${config.apiBaseUrl}/Account/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username: username, password: password }),

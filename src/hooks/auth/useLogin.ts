@@ -16,8 +16,9 @@ export function useLogin(): UseMutationResult<
   LoginInput,
   unknown
 > {
+  console.log("useLogin");
   const auth = useContext(AuthContext);
-
+  
   return useMutation({
     mutationFn: async (input: LoginInput) => {
       await auth.login(input.username, input.password);

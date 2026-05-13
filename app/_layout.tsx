@@ -3,11 +3,12 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { Redirect, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { ActivityIndicator, Text, View } from "react-native";
 
+import { queryClient } from "@/store/queryClient";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 import { useColorScheme } from "@/hooks/useColorScheme";
 
@@ -40,16 +41,11 @@ function RootLayoutNav() {
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <Stack screenOptions={{ headerShown: false }}>
-        {/* 👇 Auth stack */}
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-
-        {/* 👇 App stack */}
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-
         <Stack.Screen name="+not-found" />
       </Stack>
 
-      {/* ✅ THIS is where redirect should happen */}
       {!userToken ? (
         <Redirect href="/(auth)/SignIn" />
       ) : (
@@ -61,7 +57,6 @@ function RootLayoutNav() {
   );
 }
 
-const queryClient = new QueryClient();
 export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>

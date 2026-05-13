@@ -1,5 +1,3 @@
-// src/api/apiClient.ts
-import type { RefreshResponse } from "@/types/auth";
 import {
   getRefreshToken,
   getToken,
@@ -7,13 +5,15 @@ import {
   removeToken,
   saveToken,
 } from "@/services/secureStorage";
+import type { RefreshResponse } from "@/types/auth";
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
+import { config } from "@/constants/config";
 
-// پایه URL پروژه‌ات را اینجا تنظیم کن
-const BASE_URL = "http://10.0.2.2:5171/api";
+const BASE_URL = config.apiBaseUrl;
 
-export const api: AxiosInstance = axios.create({
+const api: AxiosInstance = axios.create({
   baseURL: BASE_URL,
+  timeout: config.apiTimeout,
   headers: {
     "Content-Type": "application/json",
   },
@@ -42,7 +42,6 @@ const processQueue = (error: unknown, token: string | null = null) => {
   failedQueue = [];
 };
 
-// Request interceptor — هر درخواست هدر Authorization را ست کند (اگر توکن موجود باشد)
 api.interceptors.request.use(
   async (config) => {
     const token = await getToken();
@@ -115,3 +114,5 @@ api.interceptors.response.use(
     }
   },
 );
+
+export default api;

@@ -18,11 +18,12 @@ export const AuthContext = createContext<AuthContextType>({
 
 export const useAuth = () => useContext(AuthContext);
 
+console.log("AuthContext ");
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [userToken, setUserToken] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-
-  console.log("AuthContext ");
+  
+  console.log("AuthContext AuthProvider");
 
   const loadToken = async () => {
     const token = await SecureStore.getItemAsync("token");
@@ -35,9 +36,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const login = async (username: string, password: string) => {
-    const token = await loginApi(username, password);
-    await SecureStore.setItemAsync("token", token);
-    setUserToken(token);
+    const response = await loginApi(username, password);
+    console.log("token token AuthContext", response);
+
+    await SecureStore.setItemAsync("token", response.token);
+    setUserToken(response.token);
   };
 
   const logout = async () => {
