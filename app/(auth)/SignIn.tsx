@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   View,
   Text,
@@ -11,6 +12,7 @@ import { useLogin } from "@/hooks/auth/useLogin";
 import { useRouter } from "expo-router";
 
 export default function SignIn() {
+  const { t } = useTranslation();
   const { mutate, isPending } = useLogin();
   const router = useRouter();
 
@@ -20,7 +22,7 @@ export default function SignIn() {
 
   const submit = () => {
     if (!username || !password)
-      return alert("لطفاً همه فیلدها را پر کنید.");
+      return alert(t("auth.fill_fields"));
     mutate({ username, password });
   };
 
@@ -31,7 +33,7 @@ export default function SignIn() {
         colors={["#065F46", "#10B981"]}
         style={styles.header}
       >
-        <Text style={styles.headerTitle}>Welcome Back</Text>
+        <Text style={styles.headerTitle}>{t("auth.welcome_back")}</Text>
       </LinearGradient>
 
       {/* Card */}
@@ -48,7 +50,7 @@ export default function SignIn() {
             <TextInput
               value={username}
               onChangeText={setUsername}
-              placeholder="Email or Username"
+              placeholder={t("auth.username_placeholder")}
               placeholderTextColor="#555"
               style={styles.input}
             />
@@ -58,7 +60,7 @@ export default function SignIn() {
               <TextInput
                 value={password}
                 onChangeText={setPassword}
-                placeholder="Password"
+                placeholder={t("auth.password_placeholder")}
                 placeholderTextColor="#555"
                 secureTextEntry={secure}
                 style={styles.passwordInput}
@@ -72,19 +74,19 @@ export default function SignIn() {
             </View>
 
             <TouchableOpacity style={styles.button} onPress={submit}>
-              <Text style={styles.buttonText}>Log In</Text>
+              <Text style={styles.buttonText}>{t("auth.login")}</Text>
             </TouchableOpacity>
           </>
         )}
 
         {/* Navigation */}
         <Text style={styles.footerText}>
-          Don’t have an account?{" "}
+          {t("auth.no_account")}{" "}
           <Text
             style={styles.link}
             // onPress={() => router.push("/signup")}
           >
-            Sign Up
+            {t("auth.sign_up")}
           </Text>
         </Text>
       </View>

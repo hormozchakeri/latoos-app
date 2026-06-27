@@ -1,0 +1,89 @@
+{
+  "common": {
+    "free": "Free",
+    "unknown": "Unknown",
+    "error": "Error",
+    "error_packages": "Failed to fetch packages",
+    "no_packages": "No packages available",
+    "error_package_detail": "Failed to fetch package details",
+    "by": "By {{name}}"
+  },
+  "auth": {
+    "welcome_back": "Welcome Back",
+    "username_placeholder": "Email or Username",
+    "password_placeholder": "Password",
+    "login": "Log In",
+    "no_account": "Don't have an account?",
+    "sign_up": "Sign Up",
+    "fill_fields": "Please fill all fields."
+  },
+  "explore": {
+    "hero_title": "Discover Languages,\nUnleash Potential",
+    "browse_by_language": "Browse by Language",
+    "featured_packages": "Featured Packages"
+  },
+  "packages": {
+    "title": "Packages"
+  },
+  "library": {
+    "welcome": "Welcome Back 👋",
+    "progress_tracker": "Progress Tracker",
+    "active_label": "Active:",
+    "completed_label": "Completed:",
+    "your_packages": "Your Packages",
+    "progress_label": "{{reviewed}} / {{total}} cards reviewed",
+    "practice_btn": "Practice",
+    "resume_learning": "Resume Learning",
+    "no_packages": "You have no packages yet. Start exploring!",
+    "browse_packages": "Browse Packages"
+  },
+  "practice": {
+    "hero_title": "Daily Review",
+    "hero_subtitle": "Keep your streak going!",
+    "daily_review": "Your Packages",
+    "card_count": "{{current}} / {{total}} Cards",
+    "cards_pending": "{{count}} cards pending",
+    "all_done": "All caught up!",
+    "cards": "cards",
+    "start_review": "Review",
+    "take_exam": "Exam",
+    "no_packages": "Enroll in a package to start practicing.",
+    "no_cards_title": "No cards to review",
+    "no_cards_subtitle": "Enroll in a package to start your daily review.",
+    "review_again": "Review Again"
+  },
+  "session": {
+    "question": "Question:",
+    "answer": "Answer:",
+    "tap_to_reveal": "Tap to reveal",
+    "show_answer": "Show Answer",
+    "hard": "Hard",
+    "good": "Good",
+    "easy": "Easy",
+    "session_done": "Session Complete!",
+    "reviewed_count": "You reviewed {{count}} cards",
+    "take_exam": "Take the Exam",
+    "back_to_library": "Back to Library"
+  },
+  "arena": {
+    "question_of": "Question {{current}} of {{total}}",
+    "translate_prompt": "Translate:",
+    "next": "Submit",
+    "finish": "Finish Exam",
+    "result_passed": "Excellent Work!",
+    "result_try_again": "Keep Practicing!",
+    "correct_of": "{{correct}} correct out of {{total}}",
+    "back_to_practice": "Back to Practice"
+  },
+  "package_detail": {
+    "about": "About this course",
+    "syllabus": "Syllabus",
+    "enroll": "Enroll Now — {{price}}",
+    "reviews": "{{count}} Reviews",
+    "enrolled_badge": "Enrolled",
+    "continue_learning": "Continue Learning",
+    "enrolled_title": "Enrolled!",
+    "enrolled_message": "You have successfully enrolled in this package.",
+    "enroll_error": "Failed to enroll. Please try again."
+  }
+}

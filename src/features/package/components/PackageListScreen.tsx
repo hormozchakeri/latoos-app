@@ -1,6 +1,7 @@
 import { usePackages } from "@/features/package/hooks";
 import { useRouter } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
   FlatList,
@@ -14,6 +15,7 @@ import {
 import type { Package } from "@/features/package/types";
 
 const PackageListScreen = () => {
+  const { t } = useTranslation();
   const { data, isLoading, error } = usePackages();
   const router = useRouter();
 
@@ -27,7 +29,7 @@ const PackageListScreen = () => {
   if (error) {
     return (
       <View style={styles.center}>
-        <Text style={{ color: "#EF4444" }}>خطا در دریافت پکیج‌ها</Text>
+        <Text style={{ color: "#EF4444" }}>{t("common.error_packages")}</Text>
       </View>
     );
   }
@@ -49,8 +51,7 @@ const PackageListScreen = () => {
       )}
 
       <View style={styles.rowBetween}>
-        <Text style={styles.author}>⭐ By {item.producer}</Text>
-
+        <Text style={styles.author}>⭐ {t("common.by", { name: item.producer })}</Text>
         <View style={styles.ratingBox}>
           <Text style={styles.ratingText}>
             ⭐ {item.rate} ({item.rateCount})
@@ -63,7 +64,7 @@ const PackageListScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Big packages</Text>
+        <Text style={styles.headerText}>{t("packages.title")}</Text>
       </View>
 
       <FlatList
@@ -73,9 +74,7 @@ const PackageListScreen = () => {
         contentContainerStyle={{ padding: 16 }}
         ListEmptyComponent={
           <View style={styles.center}>
-            <Text style={{ color: "#64748B" }}>
-              در حال حاضر پکیجی موجود نیست
-            </Text>
+            <Text style={{ color: "#64748B" }}>{t("common.no_packages")}</Text>
           </View>
         }
       />
@@ -84,11 +83,7 @@ const PackageListScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#F8FAFC",
-  },
-
+  container: { flex: 1, backgroundColor: "#F8FAFC" },
   header: {
     backgroundColor: "#4F46E5",
     paddingTop: 60,
@@ -97,75 +92,25 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
   },
-
-  headerText: {
-    color: "white",
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-
+  headerText: { color: "white", fontSize: 24, fontWeight: "bold" },
   card: {
     backgroundColor: "#FFFFFF",
     borderRadius: 20,
     padding: 16,
     marginBottom: 16,
-
     shadowColor: "#000",
     shadowOpacity: 0.05,
     shadowRadius: 10,
     elevation: 3,
   },
-
-  rowBetween: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-
-  title: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#0F172A",
-    flex: 1,
-    marginRight: 10,
-  },
-
-  price: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#0F172A",
-  },
-
-  description: {
-    marginTop: 6,
-    marginBottom: 10,
-    color: "#64748B",
-    fontSize: 14,
-  },
-
-  author: {
-    color: "#F59E0B",
-    fontSize: 13,
-  },
-
-  ratingBox: {
-    backgroundColor: "#F1F5F9",
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 10,
-  },
-
-  ratingText: {
-    color: "#F59E0B",
-    fontSize: 13,
-    fontWeight: "bold",
-  },
-
-  center: {
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 50,
-  },
+  rowBetween: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+  title: { fontSize: 16, fontWeight: "bold", color: "#0F172A", flex: 1, marginRight: 10 },
+  price: { fontSize: 16, fontWeight: "bold", color: "#0F172A" },
+  description: { marginTop: 6, marginBottom: 10, color: "#64748B", fontSize: 14 },
+  author: { color: "#F59E0B", fontSize: 13 },
+  ratingBox: { backgroundColor: "#F1F5F9", paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10 },
+  ratingText: { color: "#F59E0B", fontSize: 13, fontWeight: "bold" },
+  center: { alignItems: "center", justifyContent: "center", marginTop: 50 },
 });
 
 export default PackageListScreen;

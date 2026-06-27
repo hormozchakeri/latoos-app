@@ -3,8 +3,11 @@ import {
   getToken,
   removeRefreshToken,
   removeToken,
+  saveRefreshToken,
   saveToken,
 } from "@/services/secureStorage";
+import { triggerAuthExpired } from "@/auth/authBridge";
+import { isTokenExpiringSoon } from "@/utils/jwtUtils";
 import type { RefreshResponse } from "@/types/auth";
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
 import { config } from "@/constants/config";
@@ -19,7 +22,7 @@ const api: AxiosInstance = axios.create({
   },
 });
 
-// کنترل concurrent refresh: وقتی در حال refresh هستیم درخواست‌ها در صف بمانند
+// Serialize concurrent refresh attempts: queue requests while a refresh is in-flight.
 let isRefreshing = false;
 let failedQueue: {
   resolve: (value?: unknown) => void;
@@ -38,76 +41,98 @@ const processQueue = (error: unknown, token: string | null = null) => {
       prom.resolve(undefined);
     }
   });
-
   failedQueue = [];
 };
 
+async function doRefresh(): Promise<string> {
+  const refreshToken = await getRefreshToken();
+  if (!refreshToken) throw new Error("No refresh token");
+
+  const response = await axios.post<RefreshResponse>(
+    `${BASE_URL}/Account/refresh`,
+    { refreshToken },
+  );
+
+  const { token: newAccessToken, refreshToken: newRefreshToken } =
+    response.data;
+
+  await saveToken(newAccessToken);
+  if (newRefreshToken) await saveRefreshToken(newRefreshToken);
+
+  return newAccessToken;
+}
+
+// Request interceptor — attach token; proactively refresh if expiring soon.
 api.interceptors.request.use(
-  async (config) => {
-    const token = await getToken();
-    if (token && config.headers) {
-      config.headers.Authorization = `Bearer ${token}`;
+  async (reqConfig) => {
+    let token = await getToken();
+
+    if (token && isTokenExpiringSoon(token)) {
+      if (!isRefreshing) {
+        isRefreshing = true;
+        try {
+          token = await doRefresh();
+          processQueue(null, token);
+        } catch (err) {
+          processQueue(err, null);
+          await removeToken();
+          await removeRefreshToken();
+          triggerAuthExpired();
+          return Promise.reject(err);
+        } finally {
+          isRefreshing = false;
+        }
+      }
     }
-    return config;
+
+    if (token && reqConfig.headers) {
+      reqConfig.headers.Authorization = `Bearer ${token}`;
+    }
+    return reqConfig;
   },
   (error) => Promise.reject(error),
 );
 
-// Response interceptor — در صورت 401 تلاش برای refresh
+// Response interceptor — retry once on 401 after refreshing.
 api.interceptors.response.use(
   (response) => response,
   async (error: AxiosError & { config?: AxiosRequestConfig }) => {
     const originalRequest = error.config;
 
-    // اگر originalRequest تعریف نشده یا status غیر 401 است → reject
     if (!originalRequest || error.response?.status !== 401) {
       return Promise.reject(error);
     }
 
-    // اگر قبلا سعی به ری‌تری شده باشه، reject کن
     if ((originalRequest as any)._retry) {
+      // Already retried — auth is truly gone.
+      await removeToken();
+      await removeRefreshToken();
+      triggerAuthExpired();
       return Promise.reject(error);
     }
 
-    // push request to queue while refresh in progress
     if (isRefreshing) {
       return new Promise((resolve, reject) => {
         failedQueue.push({ resolve, reject, config: originalRequest });
-      }).then(() => {
-        // بعد از refresh، دوباره درخواست را اجرا کن
-        return api(originalRequest);
-      });
+      }).then(() => api(originalRequest));
     }
 
     (originalRequest as any)._retry = true;
     isRefreshing = true;
 
     try {
-      const refreshToken = await getRefreshToken();
-      if (!refreshToken) throw new Error("No refresh token");
-
-      // درخواست refresh به بک‌اند (سرویس refreshApi را می‌توانی استفاده کنی)
-      const refreshResponse = await axios.post<RefreshResponse>(
-        `${BASE_URL}/auth/refresh`,
-        { refreshToken },
-      );
-
-      const newAccessToken = refreshResponse.data.accessToken;
-      await saveToken(newAccessToken);
-
+      const newAccessToken = await doRefresh();
       processQueue(null, newAccessToken);
 
-      // update header and retry original request
       if (originalRequest.headers) {
         originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
       }
       return api(originalRequest);
     } catch (err) {
       processQueue(err, null);
-
-      // پاکسازی توکن‌ها و ری‌جکت
       await removeToken();
       await removeRefreshToken();
+      triggerAuthExpired();
       return Promise.reject(err);
     } finally {
       isRefreshing = false;

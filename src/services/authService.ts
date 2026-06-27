@@ -26,8 +26,9 @@ export async function loginApi(
 export async function refreshApi(
   refreshToken: string,
 ): Promise<RefreshResponse> {
-  const res: AxiosResponse<RefreshResponse> = await api.post("/auth/refresh", {
-    refreshToken,
-  });
+  const res: AxiosResponse<RefreshResponse> = await api.post(
+    "/Account/refresh",
+    { refreshToken },
+  );
   return res.data;
 }

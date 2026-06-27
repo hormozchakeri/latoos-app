@@ -1,0 +1,89 @@
+{
+  "common": {
+    "free": "رایگان",
+    "unknown": "نامشخص",
+    "error": "خطا",
+    "error_packages": "خطا در دریافت پکیج‌ها",
+    "no_packages": "در حال حاضر پکیجی موجود نیست",
+    "error_package_detail": "خطا در دریافت اطلاعات پکیج",
+    "by": "توسط {{name}}"
+  },
+  "auth": {
+    "welcome_back": "خوش آمدید",
+    "username_placeholder": "ایمیل یا نام کاربری",
+    "password_placeholder": "رمز عبور",
+    "login": "ورود",
+    "no_account": "حساب کاربری ندارید؟",
+    "sign_up": "ثبت نام",
+    "fill_fields": "لطفاً همه فیلدها را پر کنید."
+  },
+  "explore": {
+    "hero_title": "کشف زبان‌ها،\nشکوفا شو",
+    "browse_by_language": "جستجو بر اساس زبان",
+    "featured_packages": "پکیج‌های ویژه"
+  },
+  "packages": {
+    "title": "پکیج‌ها"
+  },
+  "library": {
+    "welcome": "خوش آمدید 👋",
+    "progress_tracker": "ردیاب پیشرفت",
+    "active_label": "فعال:",
+    "completed_label": "تکمیل‌شده:",
+    "your_packages": "پکیج‌های شما",
+    "progress_label": "{{reviewed}} / {{total}} کارت مرور شده",
+    "practice_btn": "تمرین",
+    "resume_learning": "ادامه یادگیری",
+    "no_packages": "هنوز پکیجی ندارید. شروع به کاوش کنید!",
+    "browse_packages": "مرور پکیج‌ها"
+  },
+  "practice": {
+    "hero_title": "مرور روزانه",
+    "hero_subtitle": "پیوستگی خود را حفظ کنید!",
+    "daily_review": "پکیج‌های شما",
+    "card_count": "{{current}} / {{total}} کارت",
+    "cards_pending": "{{count}} کارت در انتظار",
+    "all_done": "همه کارت‌ها مرور شدند!",
+    "cards": "کارت",
+    "start_review": "مرور",
+    "take_exam": "آزمون",
+    "no_packages": "در یک پکیج ثبت‌نام کنید تا تمرین را شروع کنید.",
+    "no_cards_title": "کارتی برای مرور وجود ندارد",
+    "no_cards_subtitle": "در یک پکیج ثبت‌نام کنید تا مرور روزانه را شروع کنید.",
+    "review_again": "دوباره مرور کن"
+  },
+  "session": {
+    "question": "سوال:",
+    "answer": "جواب:",
+    "tap_to_reveal": "لمس کنید تا نشان داده شود",
+    "show_answer": "نمایش جواب",
+    "hard": "سخت",
+    "good": "خوب",
+    "easy": "آسان",
+    "session_done": "جلسه تمام شد!",
+    "reviewed_count": "شما {{count}} کارت مرور کردید",
+    "take_exam": "شرکت در آزمون",
+    "back_to_library": "بازگشت به کتابخانه"
+  },
+  "arena": {
+    "question_of": "سوال {{current}} از {{total}}",
+    "translate_prompt": "ترجمه کنید:",
+    "next": "ثبت",
+    "finish": "پایان آزمون",
+    "result_passed": "عالی بود!",
+    "result_try_again": "بیشتر تمرین کنید!",
+    "correct_of": "{{correct}} صحیح از {{total}}",
+    "back_to_practice": "بازگشت به تمرین"
+  },
+  "package_detail": {
+    "about": "درباره این دوره",
+    "syllabus": "سرفصل‌ها",
+    "enroll": "ثبت‌نام — {{price}}",
+    "reviews": "{{count}} نظر",
+    "enrolled_badge": "ثبت‌نام شده",
+    "continue_learning": "ادامه یادگیری",
+    "enrolled_title": "ثبت‌نام موفق!",
+    "enrolled_message": "شما با موفقیت در این پکیج ثبت‌نام کردید.",
+    "enroll_error": "ثبت‌نام ناموفق بود. لطفاً دوباره تلاش کنید."
+  }
+}

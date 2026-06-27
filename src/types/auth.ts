@@ -18,9 +18,13 @@ export interface AuthContextType {
 export type LoginResponse = {
   token: string;
   refreshToken: string;
-  user: User;
+  username: string;
+  email: string;
 };
 
 export interface RefreshResponse {
-  accessToken: string;
+  token: string;
+  refreshToken: string;
+  username: string;
+  email: string;
 }
