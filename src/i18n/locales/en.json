@@ -15,7 +15,10 @@
     "login": "Log In",
     "no_account": "Don't have an account?",
     "sign_up": "Sign Up",
-    "fill_fields": "Please fill all fields."
+    "fill_fields": "Please fill all fields.",
+    "or_divider": "or",
+    "continue_with_google": "Continue with Google",
+    "google_login_failed": "Google sign-in failed. Please try again."
   },
   "explore": {
     "hero_title": "Discover Languages,\nUnleash Potential",

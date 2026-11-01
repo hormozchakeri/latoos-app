@@ -15,7 +15,10 @@
     "login": "ورود",
     "no_account": "حساب کاربری ندارید؟",
     "sign_up": "ثبت نام",
-    "fill_fields": "لطفاً همه فیلدها را پر کنید."
+    "fill_fields": "لطفاً همه فیلدها را پر کنید.",
+    "or_divider": "یا",
+    "continue_with_google": "ورود با گوگل",
+    "google_login_failed": "ورود با گوگل ناموفق بود. لطفاً دوباره تلاش کنید."
   },
   "explore": {
     "hero_title": "کشف زبان‌ها،\nشکوفا شو",

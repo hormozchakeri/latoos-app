@@ -1,5 +1,5 @@
 import { registerLogoutCallback } from "@/auth/authBridge";
-import { loginApi } from "@/services/authService";
+import { googleLoginApi, loginApi } from "@/services/authService";
 import {
   getRefreshToken,
   getToken,
@@ -25,6 +25,7 @@ type AuthContextType = {
   userToken: string | null;
   loading: boolean;
   login: (username: string, password: string) => Promise<void>;
+  loginWithGoogle: (idToken: string) => Promise<void>;
   logout: () => Promise<void>;
 };
 
@@ -32,6 +33,7 @@ export const AuthContext = createContext<AuthContextType>({
   userToken: null,
   loading: true,
   login: async () => {},
+  loginWithGoogle: async () => {},
   logout: async () => {},
 });
 
@@ -132,8 +134,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUserToken(response.token);
   };
 
+  const loginWithGoogle = async (idToken: string) => {
+    const response = await googleLoginApi(idToken);
+    await saveToken(response.token);
+    await saveRefreshToken(response.refreshToken);
+    setUserToken(response.token);
+  };
+
   return (
-    <AuthContext.Provider value={{ userToken, login, logout, loading }}>
+    <AuthContext.Provider
+      value={{ userToken, login, loginWithGoogle, logout, loading }}
+    >
       {children}
     </AuthContext.Provider>
   );

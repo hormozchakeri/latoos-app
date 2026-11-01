@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   View,
@@ -9,16 +9,38 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useLogin } from "@/hooks/auth/useLogin";
+import { useGoogleSignIn } from "@/hooks/auth/useGoogleSignIn";
+import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "expo-router";
 
 export default function SignIn() {
   const { t } = useTranslation();
   const { mutate, isPending } = useLogin();
+  const { loginWithGoogle } = useAuth();
   const router = useRouter();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [secure, setSecure] = useState(true);
+
+  const {
+    promptAsync: promptGoogleAsync,
+    ready: googleReady,
+    pending: googlePending,
+    idToken: googleIdToken,
+    error: googleError,
+  } = useGoogleSignIn();
+
+  useEffect(() => {
+    if (!googleIdToken) return;
+    loginWithGoogle(googleIdToken).catch(() =>
+      alert(t("auth.google_login_failed")),
+    );
+  }, [googleIdToken]);
+
+  useEffect(() => {
+    if (googleError) alert(t("auth.google_login_failed"));
+  }, [googleError]);
 
   const submit = () => {
     if (!username || !password)
@@ -75,6 +97,22 @@ export default function SignIn() {
 
             <TouchableOpacity style={styles.button} onPress={submit}>
               <Text style={styles.buttonText}>{t("auth.login")}</Text>
+            </TouchableOpacity>
+
+            <View style={styles.dividerRow}>
+              <View style={styles.dividerLine} />
+              <Text style={styles.dividerText}>{t("auth.or_divider")}</Text>
+              <View style={styles.dividerLine} />
+            </View>
+
+            <TouchableOpacity
+              style={styles.googleButton}
+              disabled={!googleReady || googlePending}
+              onPress={() => promptGoogleAsync()}
+            >
+              <Text style={styles.googleButtonText}>
+                {t("auth.continue_with_google")}
+              </Text>
             </TouchableOpacity>
           </>
         )}
@@ -156,6 +194,40 @@ const styles = StyleSheet.create({
 
   buttonText: {
     color: "#fff",
+    fontWeight: "600",
+    fontSize: 16,
+  },
+
+  dividerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 18,
+    marginBottom: 14,
+  },
+
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: "#E5E7EB",
+  },
+
+  dividerText: {
+    marginHorizontal: 10,
+    color: "#9CA3AF",
+    fontSize: 12,
+  },
+
+  googleButton: {
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#D1D5DB",
+    padding: 16,
+    borderRadius: 14,
+    alignItems: "center",
+  },
+
+  googleButtonText: {
+    color: "#111827",
     fontWeight: "600",
     fontSize: 16,
   },

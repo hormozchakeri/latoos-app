@@ -23,6 +23,20 @@ export async function loginApi(
   return data;
 }
 
+export async function googleLoginApi(idToken: string): Promise<LoginResponse> {
+  const response = await fetch(`${config.apiBaseUrl}/Account/google-login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ idToken }),
+  });
+
+  if (!response.ok) throw new Error("Google login failed");
+
+  const data: LoginResponse = await response.json();
+
+  return data;
+}
+
 export async function refreshApi(
   refreshToken: string,
 ): Promise<RefreshResponse> {
